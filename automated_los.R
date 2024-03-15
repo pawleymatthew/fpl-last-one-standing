@@ -6,7 +6,7 @@ library(regista)
 library(stringr)
 library(progress)
 library(hash)
-library(progress)
+library(glue)
 
 options(dplyr.summarise.inform = FALSE)
 
@@ -14,7 +14,7 @@ sapply(list.files("R", full.names = TRUE, recursive = TRUE), source)
 
 # manually input these parameters
 current_gameweek <- 29
-exclude_ids <- NULL # use this to exclude certain players from selection, e.g. long-term injured
+exclude_ids <- c(294) # exclude certain players from selection, e.g. long-term injured
 prev_selected_ids <- c(82, 85, 86) # these players will be unavailable except in wildcard week
 min_gi <- 4
 min_minutes <- 800
@@ -29,6 +29,8 @@ los_simplex <- fit_los_simplex(los_pool, current_gameweek)
 # compute goal involvement probabilities for each player/gameweek
 gw_probs <- get_los_gw_probs(pred_scores, los_simplex)
 # find best selection
-my_los <- optimise_los_selection(nreps = 2, gw_probs, greedy_k = 4:7, prev_selected_ids, plot_surve_probs = TRUE)
-# print squad in readable format
+my_los <- optimise_los_selection(nreps = 1000, gw_probs, greedy_k = 4:6, prev_selected_ids, plot_surve_probs = TRUE)
+# print squad in more readable format
 matrix(my_los$squad$name, ncol = 3, byrow = TRUE, dimnames = list(current_gameweek:38, paste("Player", 1:3)))
+
+saveRDS(my_los, glue("gameweeks/gw{current_gameweek}.RDS"))

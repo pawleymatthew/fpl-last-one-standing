@@ -36,13 +36,14 @@ optimise_los_selection <- function(nreps, gw_probs, greedy_k, prev_selected_ids,
   best_k <- NULL
   best_win_prob <- 0
   
-  pb <- progress_bar$new(
-    format = "(:spin) [:bar] :percent",
-    total = length(greedy_k), clear = FALSE, width = 60)
-  
   for (k in greedy_k) {
-    pb$tick()
-    squads <- lapply(1:nreps, function(i) get_los_selection(gw_probs, k, prev_selected_ids))
+    print(paste0("k=", k))
+    pb <- txtProgressBar(min = 0, max = nreps, style = 3)
+    squads <- lapply(1:nreps, function(i) {
+      squad_i <- get_los_selection(gw_probs, k, prev_selected_ids)
+      setTxtProgressBar(pb, i)
+      return(squad_i)
+      })
     surv_probs <- lapply(squads, get_survival_probs)
     win_probs <- lapply(surv_probs, function(data) tail(data$p_survive_cum, n = 1) %>% as.numeric()) %>% unlist()
     
