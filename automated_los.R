@@ -8,6 +8,7 @@ library(stringr)
 library(progress)
 library(hash)
 library(glue)
+library(ggrepel)
 
 options(dplyr.summarise.inform = FALSE)
 
@@ -37,8 +38,10 @@ los_simplex <- fit_los_simplex(los_pool, current_gameweek)
 # compute goal involvement probabilities for each player/gameweek
 gw_probs <- get_los_gw_probs(pred_scores, los_simplex)
 # find best selection
-my_los <- optimise_los_selection(nreps = 2000, gw_probs, greedy_k = greedy_k_vals, prev_selected_ids, plot_surve_probs = TRUE)
+my_los <- optimise_los_selection(nreps = 3000, gw_probs, greedy_k = greedy_k_vals, prev_selected_ids, plot_surve_probs = TRUE)
 # print squad in more readable format
 matrix(my_los$squad$name, ncol = 3, byrow = TRUE, dimnames = list(current_gameweek:38, paste("Player", 1:3)))
 # save squad and probabilities
 saveRDS(my_los, glue("gameweeks/gw{current_gameweek}.RDS"))
+
+

@@ -2,6 +2,8 @@
 
 Algorithm for automated player selection for an FPL `Last One Standing' competition. 
 
+![](./figs/fpl-los.png)
+
 ## Rules
 
  - Each FPL Gameweek, select 3 Premier League players.
