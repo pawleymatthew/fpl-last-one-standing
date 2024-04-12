@@ -14,19 +14,20 @@ options(dplyr.summarise.inform = FALSE)
 sapply(list.files("R", full.names = TRUE, recursive = TRUE), source)
 
 # manually input these parameters
-current_gameweek <- 32
-exclude_ids <- c(294, 60) # exclude certain players from selection, e.g. long-term injured
+current_gameweek <- 33
+exclude_ids <- c() # exclude certain players from selection, e.g. long-term injured
 gw_30_ids <- c(308, 362, 412) # Salah, Palmer, Gordon
 gw_31_ids <- c(293, 85, 19) # Darwin Nunez, Solanke, Saka
-gw_32_ids <- c() # Son, Nicolas Jackson, Matheus Cunha
+gw_32_ids <- c(516, 211, 590) # Son, Nicolas Jackson, Matheus Cunha
 prev_selected_ids <- c(gw_30_ids, # these players will be unavailable except in wildcard week
-                       gw_31_ids) 
+                       gw_31_ids, 
+                       gw_32_ids) 
 min_gi <- 4
 min_minutes <- 800
-greedy_k_vals <- 4:8
+greedy_k_vals <- 3:6
 
 sapply(exclude_ids, function(id) player_hash[[as.character(id)]])
-sapply(prev_selected_ids, function(id) player_hash[[as.character(id)]]) %>% matrix(ncol = 3, byrow = TRUE)
+sapply(prev_selected_ids, function(id) player_hash[[as.character(id)]]) %>% matrix(ncol = 3, byrow = TRUE, dimnames = list((current_gameweek - (length(prev_selected_ids) %/% 3)):(current_gameweek - 1), paste("Player", 1:3)))
 
 # fit DC model and predict future scores
 pred_scores <- predict_scorelines(current_gameweek)

@@ -31,9 +31,9 @@ For each player (or at least a subset of players, say those with at least 4 goal
 ### Predicting goal involvement for each gameweek
 
 Consider a player with goal-involvement simplex $\boldsymbol{\theta}$ and predicted minutes $T$. Consider a fixture where the probability their team scores $g$ goals is $p_g$, for $g \in \mathbb{N}$. The probability that the player is involved in a goal in that fixture is given by
-$$
+\[
 \mathbb{P}(\text{at least one goal involvement}) = 1 - \left[\sum_{g=0}^\infty p_g\left(\frac{T(\theta_{n} - 1) + 90}{90} \right)^g\right].
-$$
+\]
 In practice $p_g\approx 0$ for large $g$, so the sum can be truncated. If a player's team has multiple fixtures in a single gameweek, then compute one minus the probability they fail to record a goal involvement across all the fixtures. If a player has no fixtures in a gameweek, then obviously their goal involvement probability is zero.
 
 Repeating this procedure yields a matrix of probabilities $P=(p_{ij})$, where $p_{ij}$ represents the probability that player $i$ fails to record a goal involvement in future gameweek $j$.
@@ -59,5 +59,5 @@ The algorithm will give a strategy for the rest of the competition, but the idea
 3. Input the IDs of players you want to exclude from selection, e.g. injured players. To find the ID of a given player, type `player_hash` in the Console.
 4. Input the IDs of players you have entered in previous gameweeks. These players will be ineligible for selection, apart from in Gameweek 35.
 5. Input the minimum number of goal involvement and minutes players should have in order to be considered for selection. (This is not strictly necessary, but setting restrictions reduces the player pool and speeds up the code significantly.)
-6. Input the $K$ values to be used for the strategy optimisation. 
+6. Input the $K$ values to be used for the strategy optimisation.
 7. Run the script. It will output: (i) a plot of the Dixon-Cole team parameters, (ii) the optimal strategy, (iii) the survival probability for the optimal strategy, and a plot of the gameweek/cumulative survival probabilities, (iii) the $K$ value used for the optimal strategy.
