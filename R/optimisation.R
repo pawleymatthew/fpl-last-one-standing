@@ -57,13 +57,18 @@ optimise_los_selection <- function(nreps, gw_probs, greedy_k, prev_selected_ids,
   
   if (plot_surve_probs) {
     surv_probs <- get_survival_probs(best_squad)
-    plot(surv_probs$gameweek, surv_probs$p_survive_cum, 
-         type = "l", col = "black", 
-         xlab = "Gameweek", ylab = "Survival probability",
-         ylim = c(0, 1))
-    lines(surv_probs$gameweek, surv_probs$p_survive, type = "l", col = "blue", lty = 2)
-    legend("bottomleft", legend = c("Cumulative survival probability", "Gameweek survival probability"),
-           col = c("black", "blue"), lty = c(1, 2))
+    p <- ggplot(surv_probs, aes(x = as.integer(gameweek))) +
+      geom_point(aes(y = p_survive), colour = "red", shape = 0) +
+      geom_line(aes(y = p_survive), colour = "red", linetype = 1) +
+      geom_point(aes(y = p_survive_cum), colour = "blue", shape = 1) +
+      geom_line(aes(y = p_survive_cum), colour = "blue", linetype = 2) +
+      labs(x = "Gameweek", y = "Survival probability") + 
+      theme_light() +
+      theme(panel.grid.minor = element_blank(),
+            panel.grid.major = element_blank()) +
+      geom_point(data = best_squad, aes(x = as.integer(gameweek), y = 1 - p_neither), colour = alpha("grey", 0.7)) +
+      geom_text_repel(data = best_squad, aes(x = as.integer(gameweek), y = 1 - p_neither, label = paste(name, team, sep = ", ")), colour = alpha("grey", 0.7))
+    print(p)
   }
   
   return(list("squad" = best_squad, "win_prob" = best_win_prob, "greedy_k" = best_k))

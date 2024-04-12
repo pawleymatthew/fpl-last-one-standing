@@ -15,7 +15,7 @@ sapply(list.files("R", full.names = TRUE, recursive = TRUE), source)
 
 # manually input these parameters
 current_gameweek <- 33
-exclude_ids <- c() # exclude certain players from selection, e.g. long-term injured
+exclude_ids <- c(526) # exclude certain players from selection, e.g. long-term injured
 gw_30_ids <- c(308, 362, 412) # Salah, Palmer, Gordon
 gw_31_ids <- c(293, 85, 19) # Darwin Nunez, Solanke, Saka
 gw_32_ids <- c(516, 211, 590) # Son, Nicolas Jackson, Matheus Cunha
